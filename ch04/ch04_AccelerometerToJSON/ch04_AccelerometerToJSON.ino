@@ -6,7 +6,7 @@
 #include <Arduino_LSM6DS3.h>   // Arduino WiFi R2
 //#include <Arduino_LSM9DS1.h> // Arduino BLE Sense
 
-//FIXME: does this work with breakout boards as well?
+// FIXME: does this work with breakout boards as well?
 
 void setup() {
   Serial.begin(9600);
