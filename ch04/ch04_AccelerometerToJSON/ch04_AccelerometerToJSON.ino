@@ -1,12 +1,10 @@
 /*
-   Accelerometer to JSON. Sends JSON-formatted representation of
+   AccelerometerToJSON. Sends JSON-formatted representation of
    accelerometer readings.
 */
 
 #include <Arduino_LSM6DS3.h>   // Arduino WiFi R2
 //#include <Arduino_LSM9DS1.h> // Arduino BLE Sense
-
-// FIXME: does this work with breakout boards as well?
 
 void setup() {
   Serial.begin(9600);
@@ -21,7 +19,6 @@ void setup() {
 }
 
 void loop() {
-
   float x, y, z;
   if (IMU.accelerationAvailable()) {
     IMU.readAcceleration(x, y, z);
@@ -30,7 +27,6 @@ void loop() {
     Serial.print("'y': "); Serial.print(y); Serial.print(", ");
     Serial.print("'z': "); Serial.print(z); Serial.print(", ");
     Serial.println("}");
-    delay(1000);
+    delay(200);
   }
-
 }
