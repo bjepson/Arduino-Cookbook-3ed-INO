@@ -6,13 +6,11 @@
  */
 
 const int NUMBER_OF_FIELDS = 3; // how many comma separated fields we expect
-int fieldIndex = 0;            // the current field being received
 int values[NUMBER_OF_FIELDS];   // array holding values for all the fields
 
 void setup()
 {
   Serial.begin(9600); // Initialize serial port to send and receive at 9600 baud
-  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop()
@@ -20,30 +18,22 @@ void loop()
   if ( Serial.available())
   {
     if (Serial.read() == 'H') {
+
+      // Read the values
       for (int i = 0; i < NUMBER_OF_FIELDS; i++)
       {
         values[i] = Serial.parseInt();
-        Serial.print(values[i]); Serial.print(",");
+      }
+
+      // Display the values in comma-separated format
+      Serial.print(values[0]); // First value
+
+      // Print the rest of the values with a leading comma
+      for (int i = 1; i < NUMBER_OF_FIELDS; i++) 
+      {
+        Serial.print(","); Serial.print(values[i]); 
       }
       Serial.println();
-
-      for (int i = 0; i < NUMBER_OF_FIELDS; i++)
-      {
-        blink(values[i]);        
-      }
     }
   }
-}
-
-void blink(int times)
-{
-  for (int i = 0; i < times; i++)
-  {
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(125);
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(125);
-  }
-  delay(250);
-  
 }
