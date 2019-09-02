@@ -12,7 +12,7 @@ void setup()
 void loop(){
   if ( Serial.available() >= TOTAL_BYTES)
   {
-     if( Serial.read() == HEADER)
+    if( Serial.read() == HEADER)
     {
       char tag = Serial.read();
       if(tag == MOUSE_TAG)
