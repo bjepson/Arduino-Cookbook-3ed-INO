@@ -29,9 +29,9 @@ void setup() {
 }
 
 void prompt() {
-  Serial.println("Swipe!");
+  Serial.println("\nSwipe!");
   Serial.println("Up for temperature, down for humidity");
-  Serial.println("Left for pressure, right for gyro fun.");
+  Serial.println("Left for pressure, right for gyro fun.\n");
 }
 
 void readTemperature()
@@ -86,7 +86,7 @@ void loop() {
         for (int i = 0; i < 10; i++)
         {
           readGyro();
-          delay(100);
+          delay(250);
         }
         break;
 
