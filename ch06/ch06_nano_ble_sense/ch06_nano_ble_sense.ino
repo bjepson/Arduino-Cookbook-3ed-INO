@@ -1,3 +1,7 @@
+/*
+ * Arduino Nano BLE Sense sensor demo
+ */
+
 #include <Arduino_APDS9960.h>
 #include <Arduino_HTS221.h>
 #include <Arduino_LPS22HB.h>
@@ -8,26 +12,59 @@ void setup() {
   Serial.begin(9600);
   while (!Serial);
 
-  if (!APDS.begin()) {
-    Serial.println("Error initializing APDS9960 sensor!");
+  if (!APDS.begin()) { // Initialize gesture/color/proximity sensor
+    Serial.println("Could not initialize APDS9960.");
     while (1);
   }
-  if (!HTS.begin()) {
-    Serial.println("Failed to initialize humidity temperature sensor!");
+  if (!HTS.begin()) {  // Initialize temperature/humidity sensor
+    Serial.println("Could not initialize HTS221.");
     while (1);
   }
-  if (!BARO.begin()) {
-    Serial.println("Failed to initialize pressure sensor!");
+  if (!BARO.begin()) { // Initialize barometer
+    Serial.println("Could not initialize LPS22HB.");
     while (1);
   }  
-  if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
+  if (!IMU.begin()) {  // Initialize inertial measurement unit
+    Serial.println("Could not initialize LSM9DS1.");
     while (1);
   }
 
-  prompt();
+  prompt(); // Tell users what they can do.
 }
 
+void loop() {
+
+  // If there's a gesture, run the appropriate function.
+  if (APDS.gestureAvailable()) {
+    int gesture = APDS.readGesture();
+    switch (gesture) {
+      case GESTURE_UP:
+        readTemperature();
+        break;
+
+      case GESTURE_DOWN:
+        readHumidity();
+        break;
+
+      case GESTURE_LEFT:
+        readPressure();
+        break;
+
+      case GESTURE_RIGHT:
+        Serial.println("Spin the gyro!\nx, y, z");
+        for (int i = 0; i < 10; i++)
+        {
+          readGyro();
+          delay(250);
+        }
+        break;
+
+      default:
+        break;
+    }
+    prompt(); // Show the prompt again
+  }
+}
 void prompt() {
   Serial.println("\nSwipe!");
   Serial.println("Up for temperature, down for humidity");
@@ -60,39 +97,8 @@ void readGyro()
   float x, y, z;
   if (IMU.gyroscopeAvailable()) {
     IMU.readGyroscope(x, y, z);
-    Serial.print(x); Serial.print(' ');
-    Serial.print(y); Serial.print(' ');
+    Serial.print(x); Serial.print(", ");
+    Serial.print(y); Serial.print(", ");
     Serial.println(z);
-  }
-}
-void loop() {
-  if (APDS.gestureAvailable()) {
-    int gesture = APDS.readGesture();
-    switch (gesture) {
-      case GESTURE_UP:
-        readTemperature();
-        break;
-
-      case GESTURE_DOWN:
-        readHumidity();
-        break;
-
-      case GESTURE_LEFT:
-        readPressure();
-        break;
-
-      case GESTURE_RIGHT:
-        Serial.println("Spin me right round\nx y z");
-        for (int i = 0; i < 10; i++)
-        {
-          readGyro();
-          delay(250);
-        }
-        break;
-
-      default:
-        break;
-    }
-    prompt();
   }
 }
