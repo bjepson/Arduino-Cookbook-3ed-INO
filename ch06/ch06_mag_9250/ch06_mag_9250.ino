@@ -4,9 +4,13 @@
 
 #include "MPU9250.h"
 #include <math.h>
+#include "EEPROM.h"
 
 //  I2C address of IMU. If this doesn't work, try 0x69.
 #define IMU_ADDRESS 0x68
+
+// Change this to the declination for your location. See https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml
+#define DECLINATION (-14)
 
 MPU9250 IMU(Wire, IMU_ADDRESS); // Declare the IMU object
 
@@ -25,9 +29,8 @@ void setup() {
     Serial.print("Error value: "); Serial.println(status);
     while (1); // halt the sketch
   }
-IMU.setMagCalX(10.13, 1.04);
-  IMU.setMagCalY(34.14, 1.05);
-  IMU.setMagCalZ(-64.76, 0.92);
+  
+  load_calibration();
 }
 
 void loop() {
@@ -55,7 +58,8 @@ void loop() {
   Serial.print(mz, 4);
   Serial.println();
 
-  float calcAngle = constrainAngle360(atan2f(-my, mx)) * RAD_TO_DEG;
+  float constrained = constrainAngle360(atan2f(-my, mx) + (DECLINATION * DEG_TO_RAD));
+  float calcAngle = constrained * RAD_TO_DEG;
   Serial.print(calcAngle);
   Serial.println(" degrees");
   delay(100);
@@ -66,5 +70,25 @@ float constrainAngle360(float dta) {
   dta = fmod(dta, 2.0 * PI);
   if (dta < 0.0)
     dta += 2.0 * PI;
-  return dta - (14 * DEG_TO_RAD);
+  return dta;
+}
+
+// Load the calibration from the eeprom
+// From https://github.com/bolderflight/MPU9250/issues/33
+void load_calibration() {
+  float hxb, hxs, hyb, hys, hzb, hzs;
+
+  uint8_t eeprom_buffer[24];
+  for (unsigned int i = 0; i < sizeof(eeprom_buffer); i++ ) {
+    eeprom_buffer[i] = EEPROM.read(i);
+  }
+  memcpy(&hxb, eeprom_buffer, sizeof(hxb));
+  memcpy(&hyb, eeprom_buffer + 4, sizeof(hyb));
+  memcpy(&hzb, eeprom_buffer + 8, sizeof(hzb));
+  memcpy(&hxs, eeprom_buffer + 12, sizeof(hxs));
+  memcpy(&hys, eeprom_buffer + 16, sizeof(hys));
+  memcpy(&hzs, eeprom_buffer + 20, sizeof(hzs));
+  IMU.setMagCalX(hxb, hxs);
+  IMU.setMagCalY(hyb, hys);
+  IMU.setMagCalZ(hzb, hzs);
 }
