@@ -19,7 +19,7 @@ const int analogInPin = 0; // Analog input pin connected to the variable resisto
   // here is the code from the bargraph recipe
   int sensorValue = analogRead(analogInPin);          // read the analog in value
   // map to the number of LEDs
-  int ledLevel = map(sensorValue, 10, 1023, 0, NUMBER_OF_LEDS);    
+  int ledLevel = map(sensorValue, 0, 1023, 0, NUMBER_OF_LEDS);    
   for (int led = 0; led < NUMBER_OF_LEDS; led++)
   {
     if (led < ledLevel ) {
