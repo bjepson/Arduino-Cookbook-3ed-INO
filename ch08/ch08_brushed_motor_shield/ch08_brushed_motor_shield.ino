@@ -7,8 +7,8 @@
 int leftPins[]  = {10,12};   // one pin for PWM, one pin for motor direction
 int rightPins[] = {11,13};
 
-const int MIN_PWM        = 64;  // this can range from 0 to MAX_PWM;
-const int MAX_PWM        = 128; // this can range from around 50 to 255;
+const int MIN_PWM        = 64;  // this can range from 0 to MAX_PWM
+const int MAX_PWM        = 128; // this can range from around 50 to 255
 const int leftSensorPin  = A0;  // analog pins with sensors
 const int rightSensorPin = A1;
 
