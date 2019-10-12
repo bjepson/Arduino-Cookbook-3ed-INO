@@ -7,8 +7,8 @@
 int leftPins[]  = {5,7,4};  // on pin for PWM, two pins for motor direction
 int rightPins[] = {6,3,2};
 
-const int MIN_PWM        = 64;  // this can range from 0 to MAX_PWM;
-const int MAX_PWM        = 255; // this can range from around 50 to 255;
+const int MIN_PWM        = 64;  // this can range from 0 to MAX_PWM
+const int MAX_PWM        = 128; // this can range from around 50 to 255
 const int leftSensorPin  = A0;  // analog pins with sensors
 const int rightSensorPin = A1;
 
@@ -21,14 +21,12 @@ void setup()
     pinMode(leftPins[i], OUTPUT);
     pinMode(rightPins[i], OUTPUT);
   }
-  Serial.begin(9600);
 }
 
 void loop()
 {
   int leftVal = analogRead(leftSensorPin);
   int rightVal = analogRead(rightSensorPin);
-
   
   if(sensorThreshold == 0) // have the sensors been calibrated?
   {  
@@ -41,8 +39,6 @@ void loop()
     // if there is adequate light to move ahead
     setSpeed(rightPins, map(rightVal,0,1023, MIN_PWM, MAX_PWM));
     setSpeed(leftPins,  map(leftVal ,0,1023, MIN_PWM, MAX_PWM));
-    Serial.print("Right:"); Serial.println(map(rightVal,0,1023, MIN_PWM, MAX_PWM));
-    Serial.print("Left:"); Serial.println(map(leftVal ,0,1023, MIN_PWM, MAX_PWM));
   }
 }
 
