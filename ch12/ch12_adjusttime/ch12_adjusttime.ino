@@ -37,7 +37,7 @@ bool checkSetTime()
   int step;   // the number of seconds to move (backwards if negative) 
   bool isTimeAdjusted = false;  // set to true if the time is adjusted
   step = 1;   // ready to step forwards
-  
+
   while(digitalRead(btnForward)== LOW)
   {
      adjustTime(step);
@@ -66,9 +66,11 @@ String padDigits(int digit)
 }
 
 void digitalClockDisplay(){
-  String timestr = String(hour()) + ":" + padDigits(minute()) + ":" + padDigits(second());
+  String timestr = String(hour()) + ":" + padDigits(minute()) +
+                   ":" + padDigits(second());
   Serial.println(timestr);
   
-  String datestr = String(year()) + "-" + padDigits(month()) + "-" + padDigits(day()); 
+  String datestr = String(year()) + "-" + padDigits(month()) + 
+                   "-" + padDigits(day()); 
   Serial.println(datestr);
 }

@@ -38,10 +38,12 @@ String padDigits(int digit)
 }
 
 void digitalClockDisplay(){
-  String timestr = String(hour()) + ":" + padDigits(minute()) + ":" + padDigits(second());
+  String timestr = String(hour()) + ":" + padDigits(minute()) +
+                   ":" + padDigits(second());
   Serial.println(timestr);
   
-  String datestr = String(year()) + "-" + padDigits(month()) + "-" + padDigits(day()); 
+  String datestr = String(year()) + "-" + padDigits(month()) + 
+                   "-" + padDigits(day()); 
   Serial.println(datestr);
 }
 
