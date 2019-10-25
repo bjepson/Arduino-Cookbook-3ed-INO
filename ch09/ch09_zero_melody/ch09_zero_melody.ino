@@ -1,7 +1,9 @@
 
-#define SAMPLERATE_HZ 44100
+#define SAMPLERATE_HZ 22050
 #define AMPLITUDE     ((1<<25)-1)
-#define WAV_SIZE      16
+#define WAV_SIZE      32
+
+#define Serial SerialUSB
 
 char noteNames[]    = {'C','D','E','F','G','a','b'};
 float frequencies[] = {261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88};
@@ -24,7 +26,7 @@ const int outputPin = A0;
 void setup() {
 
   analogWriteResolution(12); // set the Arduino DAC resolution
-  
+  analogWrite(outputPin, 0);
   // Generate the sine wave.
   generateSine(AMPLITUDE, sine, WAV_SIZE);
   Serial.begin(9600);
@@ -45,13 +47,15 @@ void loop() {
 
 void playNote(char note, float duration)
 {
+  Serial.print(note);
+  Serial.print(",");
   Serial.println(duration);
   // play the tone corresponding to the note name
   for (int i = 0; i < noteCount; i++)
   {
     // try and find a match for the noteName to get the index to the note
     if (noteNames[i] == note) { // find a matching note name in the array
-      playWave(sine, WAV_SIZE, frequencies[i], duration); // Play the note
+      playWave(sine, WAV_SIZE, frequencies[i]/4, duration); // Play the note
     }
   }
   // if there is no match then the note is a rest, so just do the delay

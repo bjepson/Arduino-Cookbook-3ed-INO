@@ -17,8 +17,9 @@ static int sinewave[sampleCount] = {
   
 void setup()
 {
-  pinMode(outputPin, OUTPUT);   // enable output on the led pin
+  //pinMode(outputPin, OUTPUT);   // enable output on the led pin
   analogWriteResolution(12);    // set the Arduino DAC resolution
+  analogWrite(outputPin, 0);
 }
 
 void loop()
