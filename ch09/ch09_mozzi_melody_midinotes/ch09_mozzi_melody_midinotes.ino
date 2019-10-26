@@ -30,8 +30,9 @@ byte beats[scoreLen] = {2, 2, 2, 2, 2,
                         4, 4, 4, 4, 4, 4, 4, 10};
 unsigned int beat_ms = 60000 / 180; // the time in ms for 1/8 note
 
-int curr_note = 0; // index of the note we're playing
-bool resting = false; // Mini-rest between beats
+const int pauseTime = 200; // pause between notes
+int currNote = 0; // index of the note we're playing
+bool pausing = false; // Mini-rest between beats
 
 Oscil <SIN2048_NUM_CELLS, AUDIO_RATE> aSin(SIN2048_DATA); // Sine wave
 EventDelay kChangeNoteDelay; // Delay object
@@ -44,18 +45,18 @@ void setup() {
 void updateControl() {
   
   if (kChangeNoteDelay.ready()) { // Is the delay up?
-    resting = !resting; // Toggle rest state
-    if (resting) {
+    pausing = !pausing; // Toggle rest state
+    if (pausing) {
       aSin.setFreq(0); // set the frequency
-      kChangeNoteDelay.set(200); // Hold the rest for 200ms
+      kChangeNoteDelay.set(pauseTime); // Hold the rest for 200ms
     } else {
-      if (curr_note >= scoreLen) {
-        curr_note = 0; // Go back to the beginning when done
+      if (currNote >= scoreLen) {
+        currNote = 0; // Go back to the beginning when done
       }
-      int duration = beats[curr_note] * beat_ms; // use beats array to determine duration
-      kChangeNoteDelay.set(duration); // Set the note duration
-      aSin.setFreq(mtof(score[curr_note])); // set the frequency
-      curr_note++;
+      int duration = beats[currNote] * beat_ms; // use beats array to determine duration
+      kChangeNoteDelay.set(duration - pauseTime); // Set the note duration
+      aSin.setFreq(mtof(score[currNote])); // set the frequency
+      currNote++;
     }
     kChangeNoteDelay.start();
   }
