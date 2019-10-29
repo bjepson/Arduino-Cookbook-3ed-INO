@@ -1,28 +1,32 @@
+/*
+ * Adafruit GFX ST7735 sketch
+ * Display text and a moving ball on the display
+ */
+
 #include <Adafruit_GFX.h>    // Core graphics library
 #include <Adafruit_ST7735.h> // Hardware-specific library for ST7735
 #include <SPI.h>
 
+// Define the connections for your panel. This will vary depending on
+// your display and the board you are using
 #define TFT_CS   39
 #define TFT_RST  37 
 #define TFT_DC   38
-#define TFT_BACKLIGHT  7 // Display backlight pin
-
+#define TFT_BACKLIGHT  7
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
 void setup(void) {
   
-  Serial.begin(9600);
+  tft.initR(INITR_144GREENTAB); // Init ST7735R chip, green tab packaging
+  
+  pinMode(TFT_BACKLIGHT, OUTPUT); // Backlight pin
+  digitalWrite(TFT_BACKLIGHT, HIGH); // Turn on the backlight
+  
+  tft.setRotation(2); // This will depend on how you mounted the panel
 
-  tft.initR(INITR_144GREENTAB); // Init ST7735R chip, green tab
-  pinMode(TFT_BACKLIGHT, OUTPUT);
-  digitalWrite(TFT_BACKLIGHT, HIGH); // Backlight on
-  tft.setRotation(90);
+  tft.fillScreen(ST77XX_BLACK); // Fill the screen with black
 
-  tft.fillScreen(ST77XX_BLACK);
-
-  // large block of text
-  tft.fillScreen(ST77XX_BLACK);
-
+  // Display some text in a variety of fonts
   tft.setCursor(0, 0);
   tft.setTextWrap(false);
 
@@ -40,19 +44,26 @@ void setup(void) {
 
 }
 
-int ballDir = 1;
-int ballDiameter = 8;
-int ballX = ballDiameter/2;
+int ballDir = 1;            // Current direction of motion
+int ballDiameter = 8;       // Diameter
+int ballX = ballDiameter/2; // Starting X position
 void loop() {
 
+  // If the ball is approaching the edge of the screen, reverse direction
   if (ballX >= tft.width() - ballDiameter || ballX < ballDiameter/2) {
     ballDir *= -1;
   }
+
+  // Move the ball's X position
   ballX += ballDir;
+
+  // Calculate the Y position based on where the cursor was
   int ballY = tft.getCursorY() + ballDiameter*2;
 
+  // Draw a yellow ball
   tft.fillCircle(ballX, ballY, ballDiameter/2, 0xffff00);
   delay(25);
+  // Erase the ball
   tft.fillCircle(ballX, ballY, ballDiameter/2, 0x000000);
 
 }
