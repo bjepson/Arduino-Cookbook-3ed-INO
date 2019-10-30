@@ -15,8 +15,8 @@
 #define TFT_BACKLIGHT  7
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
-void setup(void) {
-  
+void setup(void) 
+{
   tft.initR(INITR_144GREENTAB); // Init ST7735R chip, green tab packaging
   
   pinMode(TFT_BACKLIGHT, OUTPUT); // Backlight pin
@@ -41,29 +41,24 @@ void setup(void) {
   tft.setTextColor(ST77XX_BLUE);
   tft.setTextSize(3);
   tft.println("Large");
-
 }
 
-int ballDir = 1;            // Current direction of motion
-int ballDiameter = 8;       // Diameter
-int ballX = ballDiameter/2; // Starting X position
-void loop() {
-
+int ballDir = 1;          // Current direction of motion
+int ballDiameter = 8;     // Diameter
+int ballX = ballDiameter; // Starting X position
+void loop() 
+{
   // If the ball is approaching the edge of the screen, reverse direction
-  if (ballX >= tft.width() - ballDiameter || ballX < ballDiameter/2) {
+  if (ballX >= tft.width() - ballDiameter || ballX < ballDiameter) {
     ballDir *= -1;
   }
 
-  // Move the ball's X position
-  ballX += ballDir;
+  ballX += ballDir; // Move the ball's X position
 
   // Calculate the Y position based on where the cursor was
   int ballY = tft.getCursorY() + ballDiameter*2;
 
-  // Draw a yellow ball
-  tft.fillCircle(ballX, ballY, ballDiameter/2, 0xffff00);
+  tft.fillCircle(ballX, ballY, ballDiameter/2, 0xffff00); // Yellow ball
   delay(25);
-  // Erase the ball
-  tft.fillCircle(ballX, ballY, ballDiameter/2, 0x000000);
-
+  tft.fillCircle(ballX, ballY, ballDiameter/2, 0x000000); // Erase the ball
 }
