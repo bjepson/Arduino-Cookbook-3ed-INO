@@ -4,14 +4,16 @@
  * concentration on an LED display.
  */
 
-#include "Adafruit_CCS811.h"
+#include <Adafruit_CCS811.h>
 #include <Adafruit_GFX.h>
-#include "Adafruit_LEDBackpack.h"
+#include <Adafruit_LEDBackpack.h>
 
+// Create objects for the sensor and display.
 Adafruit_CCS811 ccs;
 Adafruit_7segment matrix = Adafruit_7segment();
 
-void setup() {
+void setup() 
+{
   Serial.begin(9600);
   if(!ccs.begin())
   {
@@ -24,7 +26,8 @@ void setup() {
 
 }
 
-void loop() {
+void loop() 
+{
   if(ccs.available())
   {
     if(!ccs.readData())
