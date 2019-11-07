@@ -6,10 +6,11 @@
 #define SD_CS   4
 #define TFT_CS 10
 #define TFT_DC  9
+#define TFT_RST 8
 
 // Create the objects for each of the SPI devices
 SdFat SD;
-Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_RST);
 
 SdFile root;
 Adafruit_ImageReader reader(SD);
@@ -17,14 +18,12 @@ Adafruit_ImageReader reader(SD);
 void setup(void) 
 {
   Serial.begin(9600);
-
-  tft.begin(); // Initialize the TFT
-  
   if(!SD.begin(SD_CS, SD_SCK_MHZ(25))) 
   { 
     Serial.println("Could not initialize SD card");
     while(1); // halt
   }
+  tft.begin(); // Initialize the TFT
 
   if (!root.open("/")) 
   {
@@ -46,6 +45,7 @@ void loop()
     {
       tft.fillScreen(0);
       rc = reader.drawBMP(filename, tft, 0, 0);
+
       delay(2000);
     }
     file.close();
@@ -55,7 +55,7 @@ void loop()
 
 int isBMP(char fname[])
 {
-    String fn = String(fname);
-    fn.toLowerCase();
-    return fn.endsWith("bmp");
+  String fn = String(fname);
+  fn.toLowerCase();
+  return fn.endsWith("bmp");
 }
