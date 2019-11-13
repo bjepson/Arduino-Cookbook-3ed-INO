@@ -6,17 +6,16 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 
-const char* ssid = "***REMOVED***";
-const char* password = "***REMOVED***";
-
-const int led = 2;
-int ledState = HIGH;
-String toggleCmd = "toggle";
+const char* ssid = "YOUR_SSID";
+const char* password = "YOUR_PASSWORD";
 
 ESP8266WebServer server(80);
 
+const int led = 2;
+int ledState = HIGH;
+
 // An HTML form with a button
-static const char formText[] =
+static const char formText[] PROGMEM =
   "<form action=\"/\">\n"
   "<input type=\"hidden\" name=\"toggle\"/>\n"
   "<button type=\"submit\">Toggle LED</button>\n"
@@ -33,7 +32,7 @@ void handleRoot()
   }
 
   // Display the form 
-  server.send(200, "text/html", formText);
+  server.send(200, "text/html", FPSTR(formText));
 }
 
 // Error message for unrecognized file requests
