@@ -54,8 +54,15 @@ void setup()
   Serial.print("RFM69 radio running at ");
   Serial.print((int)RF69_FREQ); Serial.println(" MHz");
 }
-byte message[RH_RF69_MAX_MESSAGE_LEN]; // Buffer to hold message from other device
-byte reply[] = "Goodbye!";
+
+struct sensor {
+  char header;
+  char padding; // ensure same alignment on 8-bit and 32-bit
+  unsigned short int pin0;
+  unsigned short int pin1;
+  unsigned short int pin2;
+} sensorStruct;
+byte message[sizeof(sensorStruct)]; // define anything you send over the radio channel outside so it's not on the stack
 void loop() 
 {
   if (rf69_manager.available()) // Received a message
@@ -64,20 +71,11 @@ void loop()
     byte sender; // Sender ID
     if (rf69_manager.recvfromAck(message, &len, &sender)) // Wait for a message
     {
-      message[len] = 0; // Add a nul (0) to end of message
-
-      Serial.print("Got ["); Serial.print((char *) message);
-      Serial.print("] from "); Serial.println(sender);
-      
-      // Blink the LED
-      digitalWrite(LED_BUILTIN, HIGH); delay(250);
-      digitalWrite(LED_BUILTIN, LOW); delay(250);
-      
-      // Reply to sender
-      if (!rf69_manager.sendtoWait(reply, sizeof(reply), sender))
-      {
-        Serial.print("Failed to send message to "); Serial.println(sender);
-      }
+      memcpy(&sensorStruct, message, len);
+      Serial.print("Header: "); Serial.println(sensorStruct.header);
+      Serial.print("Sensor 0: "); Serial.println(sensorStruct.pin0);
+      Serial.print("Sensor 1: "); Serial.println(sensorStruct.pin1);
+      Serial.print("Sensor 2: "); Serial.println(sensorStruct.pin2);
     }
   }
 }

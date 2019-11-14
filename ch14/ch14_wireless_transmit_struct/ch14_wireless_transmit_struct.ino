@@ -1,12 +1,13 @@
 /*
  * RFM69HCW transmit sketch
- * Receive a message from another module and send a reply.
+ * Send a message to another module and look for a reply.
  */
 #include <SPI.h>
 #include <RH_RF69.h>
 #include <RHReliableDatagram.h>
 
-#define MY_ADDR 1 // Address of this node
+#define MY_ADDR   2 // Address of this node
+#define DEST_ADDR 1 // The other node
 
 #define RF69_FREQ 915.0 // Set to a supported frequency 
 
@@ -54,30 +55,28 @@ void setup()
   Serial.print("RFM69 radio running at ");
   Serial.print((int)RF69_FREQ); Serial.println(" MHz");
 }
-byte message[RH_RF69_MAX_MESSAGE_LEN]; // Buffer to hold message from other device
-byte reply[] = "Goodbye!";
+
+struct sensor {
+  char header = 'H';
+  char padding; // ensure same alignment on 8-bit and 32-bit
+  unsigned short int pin0;
+  unsigned short int pin1;
+  unsigned short int pin2;
+} sensorStruct;
+byte message[sizeof(sensorStruct)]; // define anything you send over the radio channel outside so it's not on the stack
 void loop() 
 {
-  if (rf69_manager.available()) // Received a message
-  {
-    byte len = sizeof(message);
-    byte sender; // Sender ID
-    if (rf69_manager.recvfromAck(message, &len, &sender)) // Wait for a message
-    {
-      message[len] = 0; // Add a nul (0) to end of message
+  delay(1000); // Wait 1 second
 
-      Serial.print("Got ["); Serial.print((char *) message);
-      Serial.print("] from "); Serial.println(sender);
-      
-      // Blink the LED
-      digitalWrite(LED_BUILTIN, HIGH); delay(250);
-      digitalWrite(LED_BUILTIN, LOW); delay(250);
-      
-      // Reply to sender
-      if (!rf69_manager.sendtoWait(reply, sizeof(reply), sender))
-      {
-        Serial.print("Failed to send message to "); Serial.println(sender);
-      }
-    }
+  sensorStruct.pin0 = analogRead(A0);
+  sensorStruct.pin1 = analogRead(A1);
+  sensorStruct.pin2 = analogRead(A2);
+
+  byte len = sizeof(sensorStruct);
+  memcpy(message, &sensorStruct, len);
+
+  if (!rf69_manager.sendtoWait((byte *)message, len, DEST_ADDR))
+  {
+    Serial.print("Failed to send message to "); Serial.println(DEST_ADDR);
   }
 }
