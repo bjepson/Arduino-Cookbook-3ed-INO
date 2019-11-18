@@ -24,7 +24,7 @@ static const char formText[] PROGMEM =
 // Handle requests for the root document (/)
 void handleRoot() 
 {
-  // If the server got the "toggle" argument, toggle the LED.
+  // If the server got the "toggle" argbument, toggle the LED.
   if (server.hasArg("toggle"))
   {
     ledState = !ledState;
