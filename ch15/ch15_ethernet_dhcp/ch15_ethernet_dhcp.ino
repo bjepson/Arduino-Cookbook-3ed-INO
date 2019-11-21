@@ -9,8 +9,7 @@ EthernetClient client;
 
 bool configureNetwork()
 {
-  bool success = false;
-  success = (0 == Ethernet.begin(mac));
+  bool success = Ethernet.begin(mac);
   delay(1000); // give the Ethernet module a second to initialize
   return success;
 }
