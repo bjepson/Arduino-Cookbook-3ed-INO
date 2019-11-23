@@ -10,7 +10,7 @@ void setup()
   Serial.begin(9600);
   if (!configureNetwork()) { // Start the network
     Serial.println("Failed to configure the network");
-    while (true); // halt
+    while (1); // halt
   }
 
   if(client.connect("archive.org", 80) > 0) {

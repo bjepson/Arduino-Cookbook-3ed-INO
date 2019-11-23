@@ -1,112 +1,81 @@
 /*
-   WiFiNINA example
-   Earthquake warning system using MKR WiFi 1010 or Uno WiFi Rev2
-*/
+ * WiFiNINA Web Client sketch
+ * Requests some data from the Internet Archive
+ */
 
 #include <SPI.h>
 #include <WiFiNINA.h>
-#include <TimeLib.h>
 
 const char ssid[] = "YOUR SSID";
 const char password[] = "YOUR PASSWORD";
 
-const char server[] = "earthquake.usgs.gov";
-const char path_query[] = "/fdsnws/event/1/query?format=geojson&maxradiuskm=300&limit=5";
+WiFiClient client; // WiFi client
 
-const float latitude  = 41.5801;
-const float longitude = -71.4774;
+char serverName[] = "archive.org";
+String request = "GET /advancedsearch.php?q=arduino&fl%5B%5D=description"
+                 "&rows=1&sort%5B%5D=downloads+desc&output=csv#raw HTTP/1.1";
 
-WiFiSSLClient client; // SSL-capable client
-
-void setup()
+bool configureNetwork()
 {
   int status = WL_IDLE_STATUS; // WiFistatus
-
-  Serial.begin(9600);
-  pinMode(LED_BUILTIN, OUTPUT);
 
   if (WiFi.status() == WL_NO_MODULE)
   {
     Serial.println("Couldn't find Wi-Fi hardware.");
-    while (1); // halt
+    return false;
   }
-
+  if (WiFi.firmwareVersion() < WIFI_FIRMWARE_LATEST_VERSION)
+  {
+    Serial.println("Please upgrade the Wi-Fi firmware");
+  }
   while (status != WL_CONNECTED)
   {
-    Serial.print("Connecting to ");
-    Serial.println(ssid);
-
-    status = WiFi.begin(ssid, password); // Attempt WPA/WPA2 connection
-
-    delay(5000); // Wait 5 seconds
+    Serial.print("Connecting to "); Serial.println(ssid);
+    status = WiFi.begin(ssid, password); // Attempt connection until successful
+    delay(1000); // Wait 1 second
   }
-  Serial.print("Connected to ");
-  Serial.println(ssid);
+  return true;
 }
 
-#define INTERVAL (1000L * 60 * 60 * 1) // 60 seconds * 60 minutes * 1 hour
-unsigned long nextRequestTime = millis();
-void loop()
+void setup()
 {
-  if (millis() > nextRequestTime && !client.connected())
+
+  Serial.begin(9600);
+  if (!configureNetwork())
   {
-    checkQuakes();
-    nextRequestTime = millis() + INTERVAL;
+    Serial.println("Stopping.");
+    while(1); // halt
   }
-}
-
-unsigned long getTimeValue(char marker[])
-{
-    // Look for the marker
-    if (!client.find(marker)) 
-    {
-      Serial.print(F("Could not find marker in response:"));
-      Serial.println(marker);
-      return 0;
-    }
-    
-    // Read the time as a string because it's too large for parseInt.
-    String millisTime = client.readStringUntil(',');
-    String secondsTime = millisTime.substring(0, millisTime.length() - 3);;
-    return secondsTime.toInt();
-}
-void checkQuakes()
-{
-  if (client.connect(server, 443))
+  
+  Serial.println("Connecting...");
+  int ret = client.connect(serverName, 80); 
+  if (ret == 1) 
   {
-    Serial.println(F("Connected"));
-
-    String requestHeader = String("GET ") + path_query + "&latitude=" + latitude + "&longitude=" + longitude + " HTTP/1.1";
-    client.println(requestHeader);
-    client.println(String("Host: ") + server);
+    Serial.println("Connected");
+    client.println(request);
+    client.println("Host: archive.org");
     client.println("Connection: close");
     client.println();
+  } 
+  else 
+  {
+    Serial.println("Connection failed, error was: ");
+    Serial.print(ret, DEC);
+  }
+}
 
-    char status[32] = {0};
-    client.readBytesUntil('\r', status, sizeof(status));
-    if (strcmp(status + 9, "200 OK") != 0) {
-      Serial.print(F("HTTP Error "));
-      Serial.println(status);
-      return;
-    }
-
-    long responseTime = getTimeValue("\"generated\":");
-    if (!responseTime)
-      return;
-
-    // Find the first earthquake report
-    if (!client.find("\"type\":\"Feature\""))
-    {
-      Serial.println(F("No recent earthquake near that location."));
-      return;
-    }
-    
-    long quakeTime = getTimeValue("\"time\":");
-    if (!quakeTime)
-      return;
-   
-    float daysSince = (responseTime - quakeTime) / (60L * 60 * 24);
-    Serial.print(daysSince);
-    Serial.println(" days since last earthquake");
+void loop()
+{
+  if (client.available()) 
+  {
+    char c = client.read();
+    Serial.print(c);  // echo all data received to the Serial Monitor
+  }
+  if (!client.connected()) 
+  {
+    Serial.println();
+    Serial.println("Disconnecting.");
+    client.stop();
+    while(1); // halt
   }
 }

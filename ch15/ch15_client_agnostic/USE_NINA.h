@@ -11,7 +11,7 @@ bool configureNetwork()
   if (WiFi.status() == WL_NO_MODULE)
   {
     Serial.println("Couldn't find Wi-Fi hardware.");
-    while (1); // halt
+    return false;
   }
   if (WiFi.firmwareVersion() < WIFI_FIRMWARE_LATEST_VERSION)
   {
