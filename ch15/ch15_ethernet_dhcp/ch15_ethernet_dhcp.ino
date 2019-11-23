@@ -1,32 +1,44 @@
 /*
- * Simple Client to display IP address obtained from DHCP server 
+ * DHCP sketch
+ * Obtain an IP address from the DHCP server and display it
  */
 
 #include <SPI.h>
 #include <Ethernet.h>
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-EthernetClient client;
 
-bool configureNetwork()
-{
-  bool success = Ethernet.begin(mac);
-  delay(1000); // give the Ethernet module a second to initialize
-  return success;
-}
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Must be unique
+
+EthernetClient client;
 
 void setup()
 {
   Serial.begin(9600);
-  while (!Serial); // For Leonardo and 32-bit boards
-  if (!configureNetwork()) { // Start the network
-    Serial.println("Failed to configure the network");
-    while (true); // halt
+  while(!Serial); // Leonardo and 32-bit boards
+  
+  if (Ethernet.begin(mac) == 0)
+  {
+    Serial.println("Failed to configure Ethernet using DHCP");
+    while(1); // halt
   }
-  IPAddress myIPAddress = Ethernet.localIP(); 
-  Serial.print("My IP address: ");
-  Serial.print(myIPAddress);  
+  delay(1000); // give the Ethernet hardware a second to initialize
+
 }
+
+#define MAINTAIN_DELAY 1000 // Maintain DHCP lease every second
 
 void loop()
 {
+  static unsigned long nextMaintain = millis() + MAINTAIN_DELAY;
+  if (millis() > nextMaintain)
+  {
+    int ret = Ethernet.maintain();
+    if (ret == 1 || ret == 3)
+    {
+      Serial.print("Failed to maintain DHCP lease. Error: ");
+      Serial.println(ret);
+    }
+    Serial.print("Current IP address: ");
+    IPAddress myIPAddress = Ethernet.localIP(); 
+    Serial.print(myIPAddress);  
+  }
 }

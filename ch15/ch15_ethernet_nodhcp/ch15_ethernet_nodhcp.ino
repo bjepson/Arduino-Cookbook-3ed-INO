@@ -1,15 +1,15 @@
 /*
  * Ethernet Web Client sketch
- * Connects to the network without DHCP or DNS, using
- * hardcoded IP addresses for device and remote server
+ * Connects to the network without DHCP, using
+ * hardcoded IP addresses for device.
  */
 
 #include <SPI.h>
 #include <Ethernet.h>
 
-byte mac[] = { 0x3D, 0xCA, 0xFE, 0x0F, 0xBE, 0xEF }; // Must be unique
-byte ip[]  = { 192, 168, 137, 177 }; // Must be a valid address for your network
-byte server[] = { 207, 241, 224, 2 }; // Archive.org
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Must be unique
+IPAddress ip(192, 168, 1, 177); // Must be a valid address for your network
+char serverName[] = "archive.org";
 
 EthernetClient client;
 
@@ -25,7 +25,8 @@ void setup()
   delay(1000); // give the Ethernet hardware a second to initialize
 
   Serial.println("Connecting...");
-  if (client.connect(server, 80)) 
+  int ret = client.connect(serverName, 80); 
+  if (ret == 1) 
   {
     Serial.println("Connected");
     client.println(request);
@@ -35,7 +36,8 @@ void setup()
   } 
   else 
   {
-    Serial.println("Connection failed");
+    Serial.println("Connection failed, error was: ");
+    Serial.print(ret, DEC);
   }
 }
 
