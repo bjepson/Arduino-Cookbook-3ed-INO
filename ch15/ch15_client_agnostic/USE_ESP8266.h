@@ -1,7 +1,7 @@
 #include <SPI.h>
 #include <ESP8266WiFi.h>
-const char ssid[] = "YOUR SSID";
-const char password[] = "YOUR PASSWORD";
+const char ssid[] = "YOUR_SSID";
+const char password[] = "YOUR_PASSWORD";
 WiFiClient client;
 bool configureNetwork()
 {

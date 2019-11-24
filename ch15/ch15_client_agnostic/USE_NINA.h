@@ -1,7 +1,7 @@
 #include <SPI.h>
 #include <WiFiNINA.h>
-const char ssid[] = "YOUR SSID";
-const char password[] = "YOUR PASSWORD";
+const char ssid[] = "YOUR_SSID";
+const char password[] = "YOUR_PASSWORD";
 WiFiClient client;
 
 bool configureNetwork()
@@ -13,7 +13,8 @@ bool configureNetwork()
     Serial.println("Couldn't find Wi-Fi hardware.");
     return false;
   }
-  if (WiFi.firmwareVersion() < WIFI_FIRMWARE_LATEST_VERSION)
+  String fv = WiFi.firmwareVersion();
+  if (fv < WIFI_FIRMWARE_LATEST_VERSION)
   {
     Serial.println("Please upgrade the Wi-Fi firmware");
   }
