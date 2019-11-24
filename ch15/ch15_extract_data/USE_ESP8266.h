@@ -9,7 +9,7 @@ bool configureNetwork()
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) // Wait for connection
   {
-    delay(500);
+    delay(1000);
     Serial.print("Waiting for connection to "); Serial.println(ssid);
   }
   return true;
