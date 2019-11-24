@@ -11,7 +11,7 @@ const char* password = "YOUR_PASSWORD";
 
 ESP8266WebServer server(80);
 
-const int led = 2;
+const int led = LED_BUILTIN;
 int ledState = HIGH;
 
 // An HTML form with a button
@@ -24,11 +24,11 @@ static const char formText[] PROGMEM =
 // Handle requests for the root document (/)
 void handleRoot() 
 {
-  // If the server got the "toggle" argbument, toggle the LED.
+  // If the server got the "toggle" argument, toggle the LED.
   if (server.hasArg("toggle"))
   {
     ledState = !ledState;
-    digitalWrite(led, ledState);
+    digitalWrite(led, !ledState);
   }
 
   // Display the form 
@@ -45,6 +45,7 @@ void setup()
   Serial.begin(9600);
 
   pinMode(led, OUTPUT);
+  digitalWrite(led, !ledState);
 
   // Initialize Wi-Fi
   WiFi.mode(WIFI_STA);
@@ -55,6 +56,7 @@ void setup()
     delay(500);
     Serial.print(".");
   }
+  Serial.println();
 
   // Set up handlers for the root page (/) and everything else
   server.on("/", handleRoot);
@@ -66,7 +68,7 @@ void setup()
 #define MSG_DELAY 10000
 void loop() 
 {
-  static unsigned long nextMsgTime = millis() + MSG_DELAY;
+  static unsigned long nextMsgTime = 0;
   
   server.handleClient(); // Process requests from HTTP clients
 
