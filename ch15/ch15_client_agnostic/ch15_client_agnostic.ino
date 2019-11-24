@@ -3,7 +3,7 @@
  * A sketch that can work with ESP8266, WiFiNINA, and Ethernet boards
  */
 
-#include "USE_ESP.h"
+#include "USE_NINA.h"
 
 void setup()
 {

@@ -13,7 +13,7 @@ WiFiClient client; // WiFi client
 
 char serverName[] = "archive.org";
 String request = "GET /advancedsearch.php?q=arduino&fl%5B%5D=description"
-                 "&rows=1&sort%5B%5D=downloads+desc&output=csv#raw HTTP/1.1";
+                 "&rows=1&sort%5B%5D=downloads+desc&output=csv#raw HTTP/1.0";
 
 bool configureNetwork()
 {
@@ -30,7 +30,7 @@ bool configureNetwork()
   }
   while (status != WL_CONNECTED)
   {
-    Serial.print("Connecting to "); Serial.println(ssid);
+    Serial.print("Attempting Wi-Fi connection to "); Serial.println(ssid);
     status = WiFi.begin(ssid, password); // Attempt connection until successful
     delay(1000); // Wait 1 second
   }
@@ -39,7 +39,6 @@ bool configureNetwork()
 
 void setup()
 {
-
   Serial.begin(9600);
   if (!configureNetwork())
   {
@@ -47,7 +46,7 @@ void setup()
     while(1); // halt
   }
   
-  Serial.println("Connecting...");
+  Serial.println("Connecting to server...");
   int ret = client.connect(serverName, 80); 
   if (ret == 1) 
   {

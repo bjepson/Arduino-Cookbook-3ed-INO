@@ -14,17 +14,17 @@ char serverName[] = "archive.org";
 EthernetClient client;
 
 String request = "GET /advancedsearch.php?q=arduino&fl%5B%5D=description"
-                 "&rows=1&sort%5B%5D=downloads+desc&output=csv#raw HTTP/1.1";
+                 "&rows=1&sort%5B%5D=downloads+desc&output=csv#raw HTTP/1.0";
 
 void setup()
 {
   Serial.begin(9600);
-  while(!Serial); // Leonardo and 32-bit boards
+  while(!Serial); // for Leonardo and 32-bit boards
   
   Ethernet.begin(mac, ip);
   delay(1000); // give the Ethernet hardware a second to initialize
 
-  Serial.println("Connecting...");
+  Serial.println("Connecting to server...");
   int ret = client.connect(serverName, 80); 
   if (ret == 1) 
   {

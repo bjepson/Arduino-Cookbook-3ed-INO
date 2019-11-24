@@ -19,7 +19,7 @@ bool configureNetwork()
   }
   while (status != WL_CONNECTED)
   {
-    Serial.print("Connecting to "); Serial.println(ssid);
+    Serial.print("Attempting Wi-Fi connection to "); Serial.println(ssid);
     status = WiFi.begin(ssid, password); // Attempt connection until successful
     delay(1000); // Wait 1 second
   }

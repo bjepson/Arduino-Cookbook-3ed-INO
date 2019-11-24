@@ -13,7 +13,7 @@ EthernetClient client;
 void setup()
 {
   Serial.begin(9600);
-  while(!Serial); // Leonardo and 32-bit boards
+  while(!Serial); // for Leonardo and 32-bit boards
   
   if (Ethernet.begin(mac) == 0)
   {
@@ -24,13 +24,13 @@ void setup()
 
 }
 
-#define MAINTAIN_DELAY 1000 // Maintain DHCP lease every second
-
+#define MAINTAIN_DELAY 750 // Maintain DHCP lease every .75 seconds
 void loop()
 {
   static unsigned long nextMaintain = millis() + MAINTAIN_DELAY;
   if (millis() > nextMaintain)
   {
+    nextMaintain = millis() + MAINTAIN_DELAY;
     int ret = Ethernet.maintain();
     if (ret == 1 || ret == 3)
     {
@@ -39,6 +39,6 @@ void loop()
     }
     Serial.print("Current IP address: ");
     IPAddress myIPAddress = Ethernet.localIP(); 
-    Serial.print(myIPAddress);  
+    Serial.println(myIPAddress);  
   }
 }
