@@ -3,30 +3,39 @@
  * A sketch that can work with ESP8266, WiFiNINA, and Ethernet boards
  */
 
-//#include "USE_NINA.h"
-//#include "USE_Ethernet.h"
-//#include "USE_ESP8266.h"
+// Uncomment only one of the following
+#include "USE_NINA.h"     // WiFiNINA boards
+//#include "USE_Ethernet.h" // Ethernet
+//#include "USE_ESP8266.h"  // ESP8266 boards
 
 #include <TimeLib.h>
 
+char server[] = "api.open-notify.org";
 void setup()
 {
   Serial.begin(9600);
   if (!configureNetwork()) // Start the network
   {
     Serial.println("Failed to configure the network");
-    while (1); // halt
+    while(1)
+      delay(0); // halt; ESP8266 does not like ∞ loop without a delay
   }
 
-  if(client.connect("api.open-notify.org", 80) > 0) {
+  int ret = client.connect(server, 80); 
+  if (ret == 1) 
+  {
     Serial.println("Connected");
     client.println("GET /iss-now.json HTTP/1.0"); // the HTTP request
-    client.println("Host: api.open-notify.org");
+    client.print("Host: "); client.println(server);
     client.println("Connection: close");
     client.println();
-  } else {
-    Serial.println("connection failed");
-    while (1); // halt
+  } 
+  else 
+  {
+    Serial.println("Connection failed, error was: ");
+    Serial.print(ret, DEC);
+    while(1)
+      delay(0); // halt; ESP8266 does not like ∞ loop without a delay
   }
 }
 
