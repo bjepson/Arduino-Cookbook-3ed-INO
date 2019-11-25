@@ -31,7 +31,7 @@ void loop() {
   if (millis() > nextMsgTime)
   {
     Serial.print("Try http://");
-    Serial.print(getIP()); Serial.println("/analog/");
+    Serial.print(getIP()); Serial.println("/update/?pinD2=1");
     nextMsgTime = millis() + MSG_DELAY;
   }
 
@@ -118,6 +118,7 @@ void unknownPage(char *page)
   client.println("Recognized pages are:<br />");
   client.println("/analog/<br />");
   client.println("/digital/<br />");
+  client.println("/update/<br />");
   client.println("</body></html>");
 }
 
