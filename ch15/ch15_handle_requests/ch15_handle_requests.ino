@@ -8,10 +8,10 @@
  * This sketch demonstrates text parsing using Arduino Stream class.
  */
 
- // Uncomment only one of the following
- //#include "USE_NINA.h"     // WiFiNINA boards
- //#include "USE_Ethernet.h" // Ethernet
- //#include "USE_ESP8266.h"  // ESP8266 boards
+// Uncomment only one of the following
+//#include "USE_NINA.h"     // WiFiNINA boards
+//#include "USE_Ethernet.h" // Ethernet
+//#include "USE_ESP8266.h"  // ESP8266 boards
 
 void setup() {
   Serial.begin(9600);
@@ -110,7 +110,7 @@ void loop() {
       }
     }
     // give the web browser time to receive the data
-    delay(1);
+    delay(100);
     client.stop();
   }
 }
