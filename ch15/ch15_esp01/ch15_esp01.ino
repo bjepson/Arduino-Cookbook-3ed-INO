@@ -12,7 +12,7 @@ const char* password = "YOUR_PASSWORD";
 ESP8266WebServer server(80);
 
 const int led = LED_BUILTIN;
-int ledState = HIGH;
+int ledState = LOW;
 
 // An HTML form with a button
 static const char formText[] PROGMEM =
