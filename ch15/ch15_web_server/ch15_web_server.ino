@@ -1,5 +1,5 @@
 /*
- * WiFi Web Server sketch
+ * Web Server sketch
  */
 
 // Uncomment only one of the following
@@ -81,7 +81,7 @@ void loop() {
       }
     }
     // Give the web browser time to receive the data
-    delay(1);
+    delay(100);
 
     // close the connection:
     client.stop();

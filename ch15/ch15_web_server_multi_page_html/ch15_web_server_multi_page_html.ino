@@ -4,7 +4,7 @@
  */
 
 // Uncomment only one of the following
-//#include "USE_NINA.h"     // WiFiNINA boards
+#include "USE_NINA.h"     // WiFiNINA boards
 //#include "USE_Ethernet.h" // Ethernet
 //#include "USE_ESP8266.h"  // ESP8266 boards
 
@@ -12,15 +12,15 @@ const int MAX_PAGE_NAME_LEN = 8;  // max characters in a page name
 char buffer[MAX_PAGE_NAME_LEN+1];  // page name + terminating null
 
 void setup() {
- Serial.begin(9600);
+  Serial.begin(9600);
  
- if (!configureNetwork()) // Start the network
- {
-   Serial.println("Failed to configure the network");
-   while(1)
-     delay(0); // halt; ESP8266 does not like ∞ loop without a delay
- }
- server.begin();
+  if (!configureNetwork()) // Start the network
+  {
+    Serial.println("Failed to configure the network");
+    while(1)
+      delay(0); // halt; ESP8266 does not like ∞ loop without a delay
+  }
+  server.begin();
   pinMode(LED_BUILTIN, OUTPUT);
   for(int i=0; i < 3; i++)
   {
@@ -69,7 +69,7 @@ void loop() {
       }
     }
     // give the web browser time to receive the data
-    delay(1);
+    delay(100);
     client.stop();
   }
 }

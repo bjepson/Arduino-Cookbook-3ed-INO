@@ -92,7 +92,7 @@ void loop() {
       }
     }
     // give the web browser time to receive the data
-    delay(1);
+    delay(100);
     client.stop();
   }
 }

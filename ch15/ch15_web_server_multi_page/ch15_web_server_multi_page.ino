@@ -14,15 +14,15 @@ const int MAX_PAGE_NAME_LEN = 8;  // max characters in a page name
 char buffer[MAX_PAGE_NAME_LEN+1];  // page name + terminating null
 
 void setup() {
- Serial.begin(9600);
+  Serial.begin(9600);
  
- if (!configureNetwork()) // Start the network
- {
-   Serial.println("Failed to configure the network");
-   while(1)
-     delay(0); // halt; ESP8266 does not like ∞ loop without a delay
- }
- server.begin();
+  if (!configureNetwork()) // Start the network
+  {
+    Serial.println("Failed to configure the network");
+    while(1)
+      delay(0); // halt; ESP8266 does not like ∞ loop without a delay
+  }
+  server.begin();
 }
 
 #define MSG_DELAY 10000
