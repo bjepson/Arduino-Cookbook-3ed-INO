@@ -6,7 +6,7 @@
  */
 
 // Uncomment only one of the following
-#include "USE_NINA.h"     // WiFiNINA boards
+//#include "USE_NINA.h"     // WiFiNINA boards
 //#include "USE_Ethernet.h" // Ethernet
 //#include "USE_ESP8266.h"  // ESP8266 boards
 
