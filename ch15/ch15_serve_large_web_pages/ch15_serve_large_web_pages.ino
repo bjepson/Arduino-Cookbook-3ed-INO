@@ -11,16 +11,12 @@
  */
 
 // Uncomment only one of the following
-#include "USE_NINA.h"     // WiFiNINA boards
+//#include "USE_NINA.h"     // WiFiNINA boards
 //#include "USE_Ethernet.h" // Ethernet
 //#include "USE_ESP8266.h"  // ESP8266 boards
 
-#ifdef __AVR__
 #include <avr/pgmspace.h> // for progmem
-#define P(name)   static const char name[] PROGMEM  // declare a static string
-#else
-#define P(name)   static const char name[]  // declare a static string
-#endif
+#define P(name) static const char name[] PROGMEM  // declare a static string
 
 const int MAX_PAGENAME_LEN = 8;  // max characters in page name 
 char buffer[MAX_PAGENAME_LEN+1]; // additional character for terminating null
@@ -139,7 +135,6 @@ P(led_off) = "<img src=\"data:image/jpg;base64,"
 "L1KX5zvAPXESjdHsTFWpxLKOJ54hIA1DZCj+Vx/3r96fCNrkvRaT0+V3zV/llplr9sVeHZui/ONk"
 "H3dzt6cL/9k="
 "\"/>";
-;
 
 void showDigital()
 {
@@ -269,7 +264,7 @@ void sendHeader(char *title)
 
 void printP(const char *str)
 {
-#ifdef __AVR__
+
   // copy data out of program memory into local storage, write out in
   // chunks of 32 bytes to avoid extra short TCP/IP packets
   // from webduino library Copyright 2009 Ben Combee, Ran Talbott
@@ -288,7 +283,4 @@ void printP(const char *str)
   // write out everything left but trailing NUL
   if (bufferEnd > 1)
     client.write(buffer, bufferEnd - 1);
-#else
-  client.write(str);
-#endif
 }
