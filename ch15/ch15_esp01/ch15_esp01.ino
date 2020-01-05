@@ -47,7 +47,7 @@ void setup()
   pinMode(led, OUTPUT);
   digitalWrite(led, !ledState);
 
-  // Initialize Wi-Fi
+  // Initialize WiFi
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
@@ -79,5 +79,4 @@ void loop()
     Serial.println(WiFi.localIP());
     nextMsgTime = millis() + MSG_DELAY;
   }
-  
 }
