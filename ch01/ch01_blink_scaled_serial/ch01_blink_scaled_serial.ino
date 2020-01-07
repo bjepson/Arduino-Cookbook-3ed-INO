@@ -1,5 +1,5 @@
 /*
- * Blink with photoresistor (scaled) sketch
+ * Blink sketch with photoresistor (scaled with serial output)
  */
 const int sensorPin = A0;    // connect sensor to analog input 0
 
@@ -14,16 +14,17 @@ const int maxDuration = 1000; // maximum wait between blinks
 void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT);  // enable output on the led pin
+  Serial.begin(9600);            // initialize Serial
 }
 
 void loop()
 {
   int delayval = analogRead(sensorPin);    // read the analog input
-
   // the next line scales the delay value between the min and max values
   delayval = map(delayval, low, high, minDuration, maxDuration);
   delayval = constrain(delayval, minDuration, maxDuration);
-
+  
+  Serial.println(delayval);        // print delay value to serial monitor
   digitalWrite(LED_BUILTIN, HIGH); // set the LED on
   delay(delayval);                 // delay is dependent on light level
   digitalWrite(LED_BUILTIN, LOW);  // set the LED off
