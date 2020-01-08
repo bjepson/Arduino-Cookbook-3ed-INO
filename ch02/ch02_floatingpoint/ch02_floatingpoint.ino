@@ -24,11 +24,11 @@ void loop()
     Serial.print(value,7); // print to 7 decimal places
     Serial.println(" is almost equal to zero, restarting countdown");
     value = 1.1;
-
   }
-  else
+  else 
+  {
     Serial.println(value);
-
+  }
   delay(250);
 }
       
