@@ -2,17 +2,16 @@
   Basic_Strings sketch
  */
 
-String text1 = "This string";
-String text2 = " has more text";
+String text1 = "This text";
+String text2 = " has more characters";
 String text3;  // to be assigned within the sketch
 
 void setup()
 {
   Serial.begin(9600);
-  while(!Serial); // See #serial_output_begin_wait
+  while(!Serial); // Wait for serial port (Leonardo, 32-bit boards)
 
-  Serial.print( text1);
-  Serial.print(" is ");
+  Serial.print("text1 is ");
   Serial.print(text1.length());
   Serial.println(" characters long.");
 

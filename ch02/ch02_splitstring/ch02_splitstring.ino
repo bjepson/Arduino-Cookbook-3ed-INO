@@ -10,23 +10,23 @@ int     commaPosition;  // the position of the next comma in the string
 void setup()
 {
   Serial.begin(9600);
-  while(!Serial); // See #serial_output_begin_wait
+  while(!Serial); // Wait for serial port (Leonardo, 32-bit boards)
 
-  Serial.println(message);          // show the source string
+  Serial.println(message); // show the source string
   do
   {
-      commaPosition = message.indexOf(',');
-      if(commaPosition != -1)
-      {
-          Serial.println( message.substring(0,commaPosition));
-          message = message.substring(commaPosition+1, message.length());
-      }
-      else
-      {  // here after the last comma is found
-         if(message.length() > 0)
-           Serial.println(message);  // if there is text after the last comma,
-                                     // print it
-      }
+    commaPosition = message.indexOf(',');
+    if(commaPosition != -1)
+    {
+      Serial.println( message.substring(0,commaPosition));
+      message = message.substring(commaPosition+1, message.length());
+    }
+    else
+    { // here after the last comma is found
+      if(message.length() > 0)
+        Serial.println(message);  // if there is text after the last comma,
+                                  // print it
+    }
    }
    while(commaPosition >=0);
 }

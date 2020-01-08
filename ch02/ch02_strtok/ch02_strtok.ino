@@ -1,5 +1,5 @@
 /*
- * SplitSplit sketch
+ * strtok sketch
  * split a comma-separated string
  */
 
@@ -13,7 +13,7 @@ char stringBuffer[MAX_STRING_LEN+1]; // a static buffer for computation and outp
 void setup()
 {
   Serial.begin(9600);
-  while(!Serial); // See #serial_output_begin_wait
+  while(!Serial); // Wait for serial port (Leonardo, 32-bit boards)
 
   char *str;
   char *p;
