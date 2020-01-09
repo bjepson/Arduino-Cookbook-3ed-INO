@@ -14,11 +14,8 @@ void setup() {
     long randnum = random(minr, maxr); // random number between minr and maxr -1
     Serial.println(randnum);
   }
-
-
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
 }

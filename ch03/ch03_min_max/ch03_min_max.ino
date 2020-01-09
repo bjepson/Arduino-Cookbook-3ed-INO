@@ -11,18 +11,18 @@ void setup() {
 
   {
     // myMinValue will be the smaller of the three analog readings:
-    int myMinValue = min(analogRead(0), min(analogRead(1), analogRead(2)) );
+    int myMinValue = min(analogRead(0), min(analogRead(1), analogRead(2)));
     Serial.println(myMinValue);
   }
 
   {
-    int myMaxValue = max(analogRead(0), max(analogRead(1), 
-                                        max(analogRead(2), analogRead(3))));
+    int myMaxValue = max(analogRead(0), 
+                         max(analogRead(1), 
+                             max(analogRead(2), analogRead(3))));
     Serial.println(myMaxValue);
   }
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
 }
