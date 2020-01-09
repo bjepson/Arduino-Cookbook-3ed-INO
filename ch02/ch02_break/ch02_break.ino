@@ -1,13 +1,12 @@
-/* 
-   break sketch
-   Demonstrates the use of the break statement
+/*
+ * break sketch
+ * Demonstrates the use of the break statement
  */
 
-const int sensorPin = A0; // analog input 0
 const int switchPin = 2; // digital input 2
 
 void setup()
-{ 
+{
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT); // enable LED pin as output
   pinMode(switchPin, INPUT_PULLUP); // enable button pin as input
@@ -15,7 +14,7 @@ void setup()
 
 void loop()
 {
-  while(analogRead(sensorPin) > 100)
+  while(true) // endless loop
   {
     if(digitalRead(switchPin) == LOW)
     {
@@ -27,8 +26,8 @@ void loop()
 
 void blink()
 {
-   digitalWrite(LED_BUILTIN, HIGH);
-   delay(100); 
-   digitalWrite(LED_BUILTIN, LOW);
-   delay(100);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(100);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(100);
 }
