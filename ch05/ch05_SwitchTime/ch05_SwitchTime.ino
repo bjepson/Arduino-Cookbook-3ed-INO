@@ -9,11 +9,11 @@
 const int ledPin = LED_BUILTIN;        // the number of the output pin
 const int inPin = 2;                   // the number of the input pin
 
-const int  debounceTime = 20;          // the time in milliseconds required
+const int debounceTime = 20;           // the time in milliseconds required
                                        // for the switch to be stable
-const int  fastIncrement = 1000;       // increment faster after this many
+const int fastIncrement = 1000;        // increment faster after this many
                                        // milliseconds
-const int  veryFastIncrement = 4000;   // and increment even faster after
+const int veryFastIncrement = 4000;    // and increment even faster after
                                        // this many milliseconds
 int count = 0;                         // count decrements every tenth of a
                                        // second until reaches 0
@@ -27,7 +27,7 @@ void setup()
 void loop()
 {
   int duration = switchTime();
-  if( duration > veryFastIncrement)
+  if(duration > veryFastIncrement)
   {
     count = count + 10;
   }
