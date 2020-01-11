@@ -6,9 +6,6 @@
 const int switchAPin = 2;  // the pin for switch A
 const int switchBPin = 3;  // the pin for switch B
 
-// functions with references must be explicitly declared
-unsigned long switchTime(int pin, bool &state, unsigned long &startTime);
-
 void setup()
 {
   pinMode(switchAPin, INPUT_PULLUP);
@@ -42,9 +39,13 @@ unsigned long switchTime(int pin, bool &state, unsigned long  &startTime)
     startTime = millis();  // store the time
   }
   if(state == LOW)
+  {
     return millis() - startTime;   // return the time in milliseconds
+  }
   else
+  {
     return 0; // return 0 if the switch is not pushed (in the HIGH state);
+  }
 }
 
 long switchATime()
