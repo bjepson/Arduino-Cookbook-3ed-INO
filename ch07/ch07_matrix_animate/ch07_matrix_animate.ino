@@ -40,8 +40,8 @@ void setup() {
 void loop() {
   int pulseDelay = 800 ; // milliseconds to wait between beats
 
-  show(smallHeart, 80);  // show the small heart image for 100 ms
-  show(bigHeart, 160);   // followed by the big heart for 200ms
+  show(smallHeart, 80);  // show the small heart image for 80ms
+  show(bigHeart, 160);   // followed by the big heart for 160ms
   delay(pulseDelay);     // show nothing between beats
 }
 

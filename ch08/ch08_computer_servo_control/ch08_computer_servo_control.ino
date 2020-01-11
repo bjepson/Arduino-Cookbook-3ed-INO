@@ -12,7 +12,9 @@ void setup()
 {
   Serial.begin(9600);
   for(int i=0; i < SERVOS; i++)
+  {
     myservo[i].attach(servoPins[i]);
+  }
 }
 
 void loop()
@@ -28,18 +30,15 @@ void loop()
 //
 void serviceSerial()
 {
-  static int pos = 0;
-
   if ( Serial.available()) 
   {
+    int pos = Serial.parseInt();
     char ch = Serial.read();
-
-    if( isDigit(ch) )                       // If ch is a number:
-      pos = pos * 10 + ch - '0';            // accumulate the value
-    else if(ch >= 'a' && ch <= 'a'+ SERVOS) // If ch is a letter for our servos:
+    if(ch >= 'a' && ch < 'a' + SERVOS) // If ch is a valid servo letter
     {
+      Serial.print("Servo "); Serial.print(ch - 'a');
+      Serial.print(" set to "); Serial.println(pos);
       myservo[ch - 'a'].write(pos);  // write the position to the corresponding servo
-      pos = 0; // set position back to zero
     }
   }
 }
