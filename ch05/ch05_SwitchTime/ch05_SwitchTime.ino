@@ -17,7 +17,6 @@ const int  veryFastIncrement = 4000;   // and increment even faster after
                                        // this many milliseconds
 int count = 0;                         // count decrements every tenth of a
                                        // second until reaches 0
-
 void setup()
 {
   pinMode(inPin, INPUT_PULLUP);
@@ -29,17 +28,24 @@ void loop()
 {
   int duration = switchTime();
   if( duration > veryFastIncrement)
+  {
     count = count + 10;
-  else if ( duration > fastIncrement)
-    count = count + 4;
-  else if ( duration > debounceTime)
+  }
+  else if (duration > fastIncrement)
+  {
+    count = count + 4;    
+  }
+  else if (duration > debounceTime)
+  {
     count = count + 1;
-
+  }
   else
   {
     // switch not pressed so service the timer
-    if( count == 0)
+    if( count == 0) 
+    {
       digitalWrite(ledPin, HIGH);  // turn the LED on if the count is 0
+    }
     else
     {
       digitalWrite(ledPin, LOW);   // turn the LED off if the count is not 0
@@ -62,8 +68,12 @@ long switchTime()
     state = ! state;       // yes, invert the state
     startTime = millis();  // store the time
   }
-  if( state == LOW)
+  if(state == LOW)
+  {
     return millis() - startTime;   // switch pushed, return time in milliseconds
+  }
   else
+  {
     return 0; // return 0 if the switch is not pushed (in the HIGH state);
+  }
 }
