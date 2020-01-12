@@ -18,11 +18,11 @@ void loop()
 {
   if(digitalRead(switchPin) == LOW)
   {
-     // here if the switch is pressed
-     startTime = millis();
-     while(digitalRead(switchPin) == LOW)
-        ; // wait while the switch is still pressed
-     unsigned long duration = millis() - startTime;
-     Serial.println(duration);
+    // here if the switch is pressed
+    startTime = millis();
+    while(digitalRead(switchPin) == LOW)
+      ; // wait while the switch is still pressed
+    unsigned long duration = millis() - startTime;
+    Serial.println(duration);
   }
 }

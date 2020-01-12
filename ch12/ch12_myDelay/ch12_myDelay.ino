@@ -1,4 +1,6 @@
-// blink an LED for a set amount of time
+/*
+ * myDelay example sketch to blink an LED for a set amount of time
+ */
 const int ledPin =  LED_BUILTIN; // the number of the LED pin
 
 int ledState = LOW;              // ledState used to set the LED
@@ -12,7 +14,7 @@ void setup()
 
 void loop()
 {
-  Serial.println(millis() / 1000); // print elapsed seconds every four seconds
+  Serial.println(millis() / 1000); // print elapsed time in seconds
   // wait four seconds (but at the same time, quickly blink an LED)
   myDelay(4000);                 
 }
@@ -30,15 +32,19 @@ void myDelay(unsigned long duration)
 // interval is the time that the LED is on and off
 void blink(long interval)
 {
-  if (millis() - previousMillis > interval)
+  if (millis() > previousMillis + interval)
   {
     // save the last time you blinked the LED
     previousMillis = millis();
     // if the LED is off turn it on and vice versa:
     if (ledState == LOW)
+    {
       ledState = HIGH;
+    }
     else
+    {
       ledState = LOW;
+    }
     digitalWrite(ledPin, ledState);
   }
 }
