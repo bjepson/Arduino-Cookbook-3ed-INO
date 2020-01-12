@@ -3,8 +3,8 @@
  */
 const int ledPin =  LED_BUILTIN; // the number of the LED pin
 
-int ledState = LOW;              // ledState used to set the LED
-long previousMillis = 0;         // will store last time LED was updated
+int ledState = LOW;               // ledState used to set the LED
+unsigned long previousMillis = 0; // will store last time LED was updated
 
 void setup()
 {
@@ -14,37 +14,38 @@ void setup()
 
 void loop()
 {
-  Serial.println(millis() / 1000); // print elapsed time in seconds
-  // wait four seconds (but at the same time, quickly blink an LED)
-  myDelay(4000);                 
-}
-
-// duration is delay time in milliseconds
-void myDelay(unsigned long duration)
-{
-  unsigned long start = millis();
-  while (millis() <= start + duration)
+  if (myDelay(blink, 250))
   {
-    blink(100);  // blink the LED inside the while loop
+    Serial.println(millis() / 1000.0); // print elapsed time in seconds
   }
 }
 
-// interval is the time that the LED is on and off
-void blink(long interval)
+/*
+ * Perform the specified function, return true if it was performed
+ */
+bool myDelay(void (*func)(void), long interval)
 {
-  if (millis() >= previousMillis + interval)
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval)
   {
     // save the last time you blinked the LED
-    previousMillis = millis();
-    // if the LED is off turn it on and vice versa:
-    if (ledState == LOW)
-    {
-      ledState = HIGH;
-    }
-    else
-    {
-      ledState = LOW;
-    }
-    digitalWrite(ledPin, ledState);
+    previousMillis = currentMillis;
+    func(); // invoke the function
+    return true;
   }
+  return false;
+}
+
+void blink()
+{
+  // if the LED is off turn it on and vice versa:
+  if (ledState == LOW)
+  {
+    ledState = HIGH;
+  }
+  else
+  {
+    ledState = LOW;
+  }
+  digitalWrite(ledPin, ledState);
 }
