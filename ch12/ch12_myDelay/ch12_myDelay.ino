@@ -23,7 +23,7 @@ void loop()
 void myDelay(unsigned long duration)
 {
   unsigned long start = millis();
-  while (millis() - start <= duration)
+  while (millis() <= start + duration)
   {
     blink(100);  // blink the LED inside the while loop
   }
@@ -32,7 +32,7 @@ void myDelay(unsigned long duration)
 // interval is the time that the LED is on and off
 void blink(long interval)
 {
-  if (millis() > previousMillis + interval)
+  if (millis() >= previousMillis + interval)
   {
     // save the last time you blinked the LED
     previousMillis = millis();
