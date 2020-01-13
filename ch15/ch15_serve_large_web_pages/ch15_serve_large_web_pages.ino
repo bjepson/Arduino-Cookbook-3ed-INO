@@ -11,7 +11,7 @@
  */
 
 // Uncomment only one of the following
-//#include "USE_NINA.h"     // WiFiNINA boards
+#include "USE_NINA.h"     // WiFiNINA boards
 //#include "USE_Ethernet.h" // Ethernet
 //#include "USE_ESP8266.h"  // ESP8266 boards
 
@@ -166,10 +166,10 @@ void showChange(bool isPost)
   if(isPost)
   {
     Serial.println("isPost");
-    client.find("\n\r"); // skip to the body
+    client.find("\r\n\r\n"); // skip to the body
     // find parameters starting with "pin" and stop on the first blank line
     Serial.println(F("searching for parms"));
-    while(client.findUntil("pinD", "\n\r"))
+    while(client.findUntil("pinD", "\r\n"))
     {
       int pin = client.parseInt();       // the pin number
       int val = client.parseInt();       // 0 or 1

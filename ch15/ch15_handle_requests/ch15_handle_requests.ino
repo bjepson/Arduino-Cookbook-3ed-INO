@@ -9,7 +9,7 @@
  */
 
 // Uncomment only one of the following
-//#include "USE_NINA.h"     // WiFiNINA boards
+#include "USE_NINA.h"     // WiFiNINA boards
 //#include "USE_Ethernet.h" // Ethernet
 //#include "USE_ESP8266.h"  // ESP8266 boards
 
@@ -49,9 +49,8 @@ void loop() {
         int analogRequests = 0;
         if( client.find("GET /") ) // search for 'GET'
         {  
-          // find tokens starting with "pin" and stop on the first blank line
-          // search to the end of line for 'pin'
-          while(client.findUntil("pin", "\n\r"))
+          // find tokens starting with "pin" and stop at the end of the line
+          while(client.findUntil("pin", "\r\n"))
           {  
             char type = client.read(); // D or A
             // the next ascii integer value in the stream is the pin
