@@ -12,8 +12,6 @@ NfcAdapter nfc(pn532hsu);
 void setup() 
 {
   Serial.begin(9600);
-  while (!Serial);
-
   nfc.begin(); // Initialize the NFC reader
 }
 

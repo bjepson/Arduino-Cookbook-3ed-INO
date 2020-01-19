@@ -1,7 +1,7 @@
 /* NFC Tag Scanner - SPI
  * Look for an NFC tag and display its unique identifier. 
  */
-
+ 
 #include <SPI.h>
 #include <NfcAdapter.h>
 #include <PN532/PN532/PN532.h>
@@ -13,8 +13,6 @@ NfcAdapter nfc = NfcAdapter(pn532spi);
 void setup() 
 {
   Serial.begin(9600);
-  while (!Serial);
-
   nfc.begin(); // Initialize the NFC reader
 }
 

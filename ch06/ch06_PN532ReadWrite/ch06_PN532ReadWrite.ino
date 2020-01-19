@@ -1,19 +1,21 @@
-/* NFC Tag Scanner
+/* NFC Tag Writer
  * Look for an NFC tag and display its unique identifier. 
  */
 
-#include <SPI.h>
-#include <PN532_SPI.h>
-#include <PN532.h>
+/* 
+ * If you are using a module over SPI or I2C, see the PN532_SPI 
+ * or PN532_I2C examples for the appropriate preamble.
+ */
 #include <NfcAdapter.h>
-PN532_SPI pn532spi(SPI, 10);
-NfcAdapter nfc = NfcAdapter(pn532spi);
+#include <PN532/PN532/PN532.h>
+#include <PN532/PN532_HSU/PN532_HSU.h>
+
+PN532_HSU pn532hsu(Serial1);
+NfcAdapter nfc(pn532hsu);
 
 void setup() 
 {
   Serial.begin(9600);
-  while (!Serial);
-
   nfc.begin(); // Initialize the NFC reader
 }
 
