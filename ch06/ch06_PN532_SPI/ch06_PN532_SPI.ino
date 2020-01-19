@@ -1,11 +1,12 @@
-/* NFC Tag Scanner
+/* NFC Tag Scanner - SPI
  * Look for an NFC tag and display its unique identifier. 
  */
 
 #include <SPI.h>
-#include <PN532_SPI.h>
-#include <PN532.h>
 #include <NfcAdapter.h>
+#include <PN532/PN532/PN532.h>
+#include <PN532/PN532_SPI/PN532_SPI.h>
+
 PN532_SPI pn532spi(SPI, 10);
 NfcAdapter nfc = NfcAdapter(pn532spi);
 
