@@ -11,9 +11,8 @@ void setup() {
 
 void loop()
 {
-
   digitalWrite(xbeePin, HIGH);
-  delay(3000);
+  delay(2000);
   digitalWrite(xbeePin, LOW);
-  delay(3000);
+  delay(2000);
 }

@@ -3,8 +3,9 @@
   Send a Remote AT command to activate a digital pin on another XBee.
  */
 
-#define MYSERIAL Serial // Uno, Nano, and other ATmega328 boards
-//#define MYSERIAL Serial1 // Uncomment for Leonardo and most ARM-based boards
+// Uncomment only one of the following
+#define MYSERIAL Serial // Uno, Nano, and other AVR boards
+//#define MYSERIAL Serial1 // Nano Every, Uno WiFi R2, Leonardo, and ARM boards
 
 const byte frameStartByte = 0x7E;
 const byte frameTypeRemoteAT  = 0x17;
@@ -12,17 +13,16 @@ const byte remoteATOptionApplyChanges = 0x02;
 
 void setup() 
 {
-   MYSERIAL.begin(9600);
+  MYSERIAL.begin(9600);
 }
 
 void loop()
 {
   toggleRemotePin(1);
-  delay(3000);
+  delay(2000);
   toggleRemotePin(0);
   delay(2000);
 }
-
 
 byte sendByte(byte value) 
 {
