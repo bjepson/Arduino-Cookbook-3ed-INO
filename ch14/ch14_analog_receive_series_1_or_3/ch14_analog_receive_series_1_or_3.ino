@@ -1,11 +1,12 @@
 /*
-  XBeeAnalogReceive Series 1 or XBee 3 Sketch
-  Read an analog value from an XBee API frame and set the brightness
-  of an LED accordingly.
+ * XBeeAnalogReceive Series 1 or XBee 3 Sketch
+ * Read an analog value from an XBee API frame and set the brightness
+ * of an LED accordingly.
  */
 
-#define MYSERIAL Serial // Uno, Nano, and other ATmega328 boards
-//#define MYSERIAL Serial1 // Uncomment for Leonardo and most ARM-based boards
+// Uncomment only one of the following
+#define MYSERIAL Serial // Uno, Nano, and other AVR boards
+//#define MYSERIAL Serial1 // Nano Every, Uno WiFi R2, Leonardo, and ARM boards
 
 // Use these settings for XBee 3:
 #define MIN_CHUNK 21
@@ -15,12 +16,11 @@
 //#define MIN_CHUNK 14
 //#define OFFSET 10
 
-const int ledPin = 5;
+const int ledPin = A5;
 
 void setup() 
 {
   MYSERIAL.begin(9600);
-  pinMode(ledPin, OUTPUT);
   configureRadio(); // check the return value if you need error handling
 }
 
