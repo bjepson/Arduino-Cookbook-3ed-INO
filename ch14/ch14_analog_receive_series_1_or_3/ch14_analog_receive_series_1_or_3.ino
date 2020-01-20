@@ -21,6 +21,7 @@ const int ledPin = A5;
 void setup() 
 {
   MYSERIAL.begin(9600);
+  delay(1000);
   configureRadio(); // check the return value if you need error handling
 }
 

@@ -3,15 +3,18 @@
  * Send a message to an XBee using its address
  */
 
-#define MYSERIAL Serial // Uno, Nano, and other ATmega328 boards
-#define MYSERIAL Serial1 // Uncomment for Leonardo and most ARM-based boards
+// Uncomment only one of the following
+#define MYSERIAL Serial // Uno, Nano, and other AVR boards
+//#define MYSERIAL Serial1 // Nano Every, Uno WiFi R2, Leonardo, and ARM boards
 
 bool configured;
 
 bool configureRadio() 
 {
   // put the radio in command mode:
+  MYSERIAL.flush();
   MYSERIAL.print("+++");
+  delay(100);
 
   String ok_response = "OK\r"; // the response we expect.
 
@@ -29,7 +32,9 @@ bool configureRadio()
   if (response.equals(ok_response)) 
   {
     MYSERIAL.print("ATDH0013A200\r"); // destination high-REPLACE 0013A200
-    MYSERIAL.print("ATDL405CBF77\r"); // destination low-REPLACE 403B9E1E
+    delay(100);
+    MYSERIAL.print("ATDL403B9E1E\r"); // destination low-REPLACE 403B9E1E
+    delay(100);
     MYSERIAL.print("ATCN\r");     // back to data mode
     return true;
   } 
@@ -42,6 +47,7 @@ bool configureRadio()
 void setup () 
 {
   MYSERIAL.begin(9600); // Begin serial
+  delay(1000);
   configured = configureRadio();
 }
 
