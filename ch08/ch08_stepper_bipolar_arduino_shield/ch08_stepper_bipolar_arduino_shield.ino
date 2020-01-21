@@ -24,7 +24,7 @@ void setup()
   pinMode(11, OUTPUT);
   digitalWrite(11, HIGH);   // enable B
   
-  stepper.setSpeed(60);   // set the speed of the motor to 30 rpm
+  stepper.setSpeed(60);   // set the speed of the motor to 60 rpm
 
   Serial.begin(9600);
 
