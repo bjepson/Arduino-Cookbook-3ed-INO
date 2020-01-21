@@ -10,17 +10,17 @@ bool configureNetwork()
 
   if (WiFi.status() == WL_NO_MODULE)
   {
-    Serial.println("Couldn't find Wi-Fi hardware.");
+    Serial.println("Couldn't find WiFi hardware.");
     return false;
   }
   String fv = WiFi.firmwareVersion();
   if (fv < WIFI_FIRMWARE_LATEST_VERSION)
   {
-    Serial.println("Please upgrade the Wi-Fi firmware");
+    Serial.println("Please upgrade the WiFi firmware");
   }
   while (status != WL_CONNECTED)
   {
-    Serial.print("Attempting Wi-Fi connection to "); Serial.println(ssid);
+    Serial.print("Attempting WiFi connection to "); Serial.println(ssid);
     status = WiFi.begin(ssid, password); // Attempt connection until successful
     delay(1000); // Wait 1 second
   }

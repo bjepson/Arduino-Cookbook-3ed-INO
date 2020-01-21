@@ -30,9 +30,9 @@ void setup()
   {
     Serial.println("Connected");
     client.println(request);
-    client.println("Host: archive.org");
+    client.print("Host: "); client.println(serverName);
     client.println("Connection: close");
-    client.println();
+    client.println(); // Send the terminating blank line that HTTP requires
   } 
   else 
   {
