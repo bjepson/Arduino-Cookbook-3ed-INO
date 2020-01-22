@@ -28,6 +28,7 @@ void loop()
   int sensorReading = analogRead(sensorPin);    // read the analog input
   int duration = map(sensorReading, low, high, minDur, maxDur);
   duration = constrain(duration, minDur, maxDur);
+  duration = constrain(duration, minDur, maxDur);
 
   for(int sample=0; sample < sampleCount; sample++) {
     analogWrite(outputPin, sinewave[sample]);
