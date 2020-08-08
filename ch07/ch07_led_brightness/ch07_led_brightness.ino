@@ -9,6 +9,7 @@ const int thirdLed   = 6;
 
 int brightness = 0;
 int increment  = 1;
+#define MAX_BRIGHTNESS 128
 
 void setup()
 {
@@ -17,9 +18,9 @@ void setup()
 
 void loop()
 {
-  if(brightness > 255)
+  if(brightness > MAX_BRIGHTNESS)
   {
-    increment = -1; // count down after reaching 255
+    increment = -1; // count down after reaching MAX_BRIGHTNESS
   }
   else if(brightness < 1)
   {
@@ -32,5 +33,5 @@ void loop()
   analogWrite(secondLed, brightness);
   analogWrite(thirdLed, brightness );
 
-  delay(10); // 10ms for each step change means 2.55 secs to fade up or down
+  delay(25); // 10ms for each step change means 2.55 secs to fade up or down
 }
