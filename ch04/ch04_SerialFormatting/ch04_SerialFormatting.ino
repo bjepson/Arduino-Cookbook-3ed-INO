@@ -10,8 +10,6 @@ char chrValue  = 65;  // these are the starting values to print
 byte byteValue = 65;
 int intValue   = 65;
 float floatValue = 65.0;
-char c1 = 4;
-char c2 = 210;
 
 void setup()
 {
