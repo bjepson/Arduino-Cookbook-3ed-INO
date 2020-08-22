@@ -3,7 +3,7 @@
  * Sends digital and analog pin values as binary data
  */
 
-const char HEADER = 'H';  // a single character header to indicate 
+const char HEADER = 'H';  // a single character header to indicate
                           // the start of a message
 
 void setup()
@@ -11,8 +11,7 @@ void setup()
   Serial.begin(9600);
   for(int i=2; i <= 13; i++)
   {
-    pinMode(i, INPUT);       // set pins 2 through 13 to inputs
-    digitalWrite(i, HIGH);   // turn on pull-ups
+    pinMode(i, INPUT_PULLUP);  // set pins 2 through 13 to inputs (with pullups)
   }
 }
 
