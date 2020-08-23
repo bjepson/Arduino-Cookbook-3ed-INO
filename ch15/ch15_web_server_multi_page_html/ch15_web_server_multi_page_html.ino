@@ -100,8 +100,7 @@ void showDigital()
   for (int i = 2; i < 8; i++) 
   {
     // show the value of digital pins
-    pinMode(i, INPUT_PULLUP);
-    digitalWrite(i, HIGH); // turn on pull-ups
+    pinMode(i, INPUT_PULLUP); // turn on pull-ups
     client.print("<tr><td>digital pin ");
     client.print(i);
     client.print(" </td><td>");
