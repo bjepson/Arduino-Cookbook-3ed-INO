@@ -3,8 +3,6 @@
   prints the key pressed on a keypad to the serial port
 */
 
-#define Serial SerialUSB
-
 const int numRows = 4;       // number of rows in the keypad
 const int numCols = 3;       // number of columns
 const int debounceTime = 20; // number of milliseconds for switch to be stable
