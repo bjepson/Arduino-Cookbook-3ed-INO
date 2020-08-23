@@ -7,7 +7,7 @@ unsigned long prevtime;   // when the clock was last displayed
 
 void setup()
 {
-  digitalWrite(buttonPin, HIGH);  // enable internal pull-up resistors
+  pinMode(buttonPin, INPUT_PULLUP); // enable internal pull-up resistors
   setTime(12,0,0,1,1,2020); // start with the time set to noon Jan 1 2020
   Serial.begin(9600);
 }
@@ -24,12 +24,12 @@ void loop()
   digitalClockDisplay();
 }
 
-// functions checks to see if the time should be adjusted
-// returns true if time was changed
+// function checks to see if the time should be adjusted
+// return true if time was changed
 bool checkSetTime()
 {
   int value;  // a value read from the pot
-  int step;   // the number of seconds to move (backwards if negative)
+  int step;   // the number of seconds to move (backward if negative)
   bool isTimeAdjusted = false;  // set to true if the time is adjusted
 
   while(digitalRead(buttonPin)== LOW)
@@ -47,6 +47,7 @@ bool checkSetTime()
   }
   return isTimeAdjusted;
 }
+
 
 // Pad digits with a leading 0
 String padDigits(int digit)
