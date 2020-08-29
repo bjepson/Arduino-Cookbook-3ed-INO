@@ -12,8 +12,10 @@ byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // MAC address to use
 
 unsigned int localPort = 8888; // local port to listen on
 
+const int maxBufferLength = 24;
+
 // buffers for receiving and sending data
-char packetBuffer[UDP_TX_PACKET_MAX_SIZE]; // buffer to hold incoming packet,
+char packetBuffer[maxBufferLength]; // buffer to hold incoming packet,
 char replyBuffer[] = "acknowledged";       // a string to send back
 
 // A UDP instance to let us send and receive packets over UDP
@@ -38,7 +40,7 @@ void loop()
     Serial.println(packetSize);
 
     // read packet into packetBuffer and get sender's IP addr and port number
-    Udp.read(packetBuffer,UDP_TX_PACKET_MAX_SIZE);
+    Udp.read(packetBuffer, maxBufferLength);
     Serial.println("Contents:");
     Serial.println(packetBuffer);
 
