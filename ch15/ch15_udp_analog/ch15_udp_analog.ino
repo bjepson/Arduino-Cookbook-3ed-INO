@@ -1,80 +1,81 @@
 /*
  *  UDPSendReceive with analog output sketch
-*/
+ */
 
-#include <SPI.h>
+#include <SPI.h>        
 #include <Ethernet.h>
-#include <EthernetUDP.h>
+#include <EthernetUdp.h> 
 
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // MAC address to use
 
 unsigned int localPort = 8888;      // local port to listen on
 
-char packetBuffer[UDP_TX_PACKET_MAX_SIZE]; // buffer to hold incoming packet,
+const int maxBufferLength = 24;
+
+byte packetBuffer[maxBufferLength]; // buffer to hold incoming/outgoing packet
 int packetSize; // holds received packet size
 
-const int analogOutPins[] = { 3, 5, 6, 9 }; // pins 10 and 11 used by Ethernet shield
+const int analogOutPins[] = { 3,5,6,9 };  
 
 // A UDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
 
-void setup() 
-{
+void setup() {
   Ethernet.begin(mac);
   Udp.begin(localPort);
-
+  
   Serial.begin(9600);
   Serial.println("Ready");
 }
 
-void loop() 
-{
+void loop() {
   // if there's data available, read a packet
-  packetSize = Udp.parsePacket();
-  if (packetSize > 0)
+  packetSize = Udp.parsePacket(); 
+  if(packetSize > 0)
   {
     Serial.print("Received packet of size ");
     Serial.print(packetSize);
     Serial.println(" with contents:");
     // read packet into packetBuffer and get sender's IP addr and port number
-    packetSize = min(packetSize, UDP_TX_PACKET_MAX_SIZE);
-    Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
+    packetSize = min(packetSize, maxBufferLength);
+    Udp.read(packetBuffer, maxBufferLength);
 
-    for ( int i = 0; i < packetSize; i++)
+    for( int i=0; i < packetSize; i++)
     {
-      byte value = packetBuffer[i];
-      if (i < 4)
-      {
-        // only write to the first four analog out pins
-        analogWrite(analogOutPins[i], value);
-      }
-      Serial.println(value, DEC);
+        byte value = packetBuffer[i];
+        if( i < 4)
+        {
+           // only write to the first four analog out pins
+           analogWrite(analogOutPins[i], value);
+        }
+        Serial.println(value, DEC);
     }
     Serial.println();
     // tell the sender the values of our analog ports
     sendAnalogValues(Udp.remoteIP(), Udp.remotePort());
   }
-  maintainLease();
+  maintainLease(); // Keep our DHCP connection
   // wait a bit
   delay(10);
 }
 
+int analogPins[] = {A0, A1, A2, A3, A4, A5};
 void sendAnalogValues( IPAddress targetIp, unsigned int targetPort )
 {
+  int len = sizeof(analogPins) / sizeof(analogPins[0]);
   Serial.println("Preparing packet");
-  int index = 0;
-  for (int i = 0; i < 6; i++)
+  for(int i = 0; i < len; i++) // Analog pins 0-5
   {
-    int value = analogRead(i);
-
-    packetBuffer[index++] = lowByte(value);  // the low byte)
-    packetBuffer[index++] = highByte(value); // the high byte)
+     int value = analogRead(analogPins[i]);
+     
+     // Map a 10-bit int to an 8-bit byte
+     packetBuffer[i] = (byte) map(value, 0, 1023, 0, 255); 
+     Serial.println(packetBuffer[i]);
   }
 
-  Serial.println(packetBuffer);
   // send a packet back to the sender
   Udp.beginPacket(targetIp, targetPort);
-  Udp.write(packetBuffer);
+  Udp.write(packetBuffer, len);
   Udp.endPacket();
   Serial.println("Packet sent");
 }
