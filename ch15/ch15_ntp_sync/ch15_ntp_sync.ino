@@ -1,5 +1,5 @@
 /*
- * Time_NTP sketch
+ * NTP sync sketch
  * Example showing time sync to NTP time source
  * This sketch uses the Time library
  * and the Arduino Ethernet library
@@ -103,7 +103,7 @@ unsigned long getNtpTime()
 }
 
 // send an NTP request to the time server at the given address
-unsigned long sendNTPpacket(IPAddress &address)
+unsigned long sendNTPpacket(IPAddress address)
 {
   memset(packetBuffer, 0, NTP_PACKET_SIZE);  // set all bytes in the buffer to 0
 
