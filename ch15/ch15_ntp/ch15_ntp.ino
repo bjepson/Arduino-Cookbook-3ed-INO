@@ -1,7 +1,7 @@
 /*
  * UdpNtp sketch
  * Get the time from an NTP time server
- * Demonstrates use of UDP sendPacket and ReceivePacket
+ * Demonstrates use of UDP to communicate with an NTP server
  */
 
 #include <SPI.h>   
