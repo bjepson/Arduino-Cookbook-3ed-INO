@@ -10,6 +10,8 @@
 #include <Ethernet.h>
 #include <EthernetUdp.h>
 
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };  // MAC address to use
+
 unsigned int localPort = 8888;      // local port to listen for UDP packets
 
 IPAddress timeServer(129, 6, 15, 28); // time.nist.gov NTP server
@@ -81,20 +83,21 @@ unsigned long getNtpTime()
   delay(1000);
   if ( Udp.parsePacket() ) 
   { 
-     Udp.read(packetBuffer,NTP_PACKET_SIZE);  // read packet into buffer
+    Udp.read(packetBuffer,NTP_PACKET_SIZE);  // read packet into buffer
 
-     // The timestamp starts at byte 40, convert four bytes into a long integer
-     unsigned long hi = word(packetBuffer[40], packetBuffer[41]);
-     unsigned long low = word(packetBuffer[42], packetBuffer[43]);
+    // The timestamp starts at byte 40, convert four bytes into a long integer
+    unsigned long hi = word(packetBuffer[40], packetBuffer[41]);
+    unsigned long low = word(packetBuffer[42], packetBuffer[43]);
 
-     // Get the NTP time (seconds since Jan 1 1900):
-     unsigned long secsSince1900 = hi << 16 | low;  
+    // Get the NTP time (seconds since Jan 1 1900):
+    unsigned long secsSince1900 = hi << 16 | low;  
 
-     // Unix time starts on Jan 1 1970
-     const unsigned long seventyYears = 2208988800UL;     
-     unsigned long epoch = secsSince1900 - seventyYears;  // subtract 70 years
+    // Unix time starts on Jan 1 1970
+    const unsigned long seventyYears = 2208988800UL;     
+    unsigned long epoch = secsSince1900 - seventyYears;  // subtract 70 years
 
-     return epoch;
+    Serial.println("Successfully synced with NTP server");
+    return epoch;
   }
   return 0; // return 0 if unable to get the time
 }
