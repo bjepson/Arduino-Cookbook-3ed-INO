@@ -1,5 +1,5 @@
 # Arduino-Cookbook-3ed-INO
-Arduino sketches for Arduino Cookbook, 3rd Edition
+Arduino sketches for Arduino Cookbook, 3rd Edition. The Processing sketches are [here](https://github.com/bjepson/Arduino-Cookbook-3ed-PDE).
 
 This is the official github repository for the Arduino Coobook, 3rd Edition by Michael Margolis, Brian Jepson, Nicholas Robert Weldin. You can find the book on [O'Reilly](https://learning.oreilly.com/library/view/arduino-cookbook-3rd/9781491903513/), [Amazon](https://www.amazon.com/Arduino-Cookbook-Recipes-Enhance-Projects/dp/149190352X), and many other places.
 
