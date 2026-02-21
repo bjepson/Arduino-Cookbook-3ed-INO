@@ -1,4 +1,12 @@
-#include <Streaming.h>
+/* 
+  See the Discussion section of Recipe 4.2 for details on the
+  Streaming library used here. This library is available from
+  Arduino's Library Manager (Streaming library by Mikal Hart).
+
+  For the version that does not require the Streaming library,
+  please use the ch04_SerialFormatting sketch.
+*/
+#include <Streaming.h> 
 
 /*
   SerialFormatting
